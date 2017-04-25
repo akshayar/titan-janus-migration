@@ -1,6 +1,6 @@
 package com.graph.poc.dto;
 
-import com.thinkaurelius.titan.core.Multiplicity;
+import org.janusgraph.core.Multiplicity;
 
 public class EdgeVO {
 	

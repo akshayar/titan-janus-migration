@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.janusgraph.core.JanusGraphFactory;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 
-import com.thinkaurelius.titan.core.TitanFactory;
 
 /**
  * @author arawa3
@@ -43,7 +43,7 @@ public class GraphDBInitializer {
 		if(GRAPH_INSTANCE!=null){
 			graph=GRAPH_INSTANCE;
 		}else{
-			graph = TitanFactory.open(new PropertiesConfiguration(dbConfigFile.getURL()));			
+			graph = JanusGraphFactory.open(new PropertiesConfiguration(dbConfigFile.getURL()));			
 		}
 		
 	}

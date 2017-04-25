@@ -1,6 +1,6 @@
 package com.graph.poc.dto;
 
-import com.thinkaurelius.titan.core.Cardinality;
+import org.janusgraph.core.Cardinality;
 
 public class PropertyVO {
 	

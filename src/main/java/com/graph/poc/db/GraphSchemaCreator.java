@@ -7,6 +7,16 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.janusgraph.core.Cardinality;
+import org.janusgraph.core.EdgeLabel;
+import org.janusgraph.core.JanusGraph;
+import org.janusgraph.core.Multiplicity;
+import org.janusgraph.core.PropertyKey;
+import org.janusgraph.core.VertexLabel;
+import org.janusgraph.core.schema.JanusGraphIndex;
+import org.janusgraph.core.schema.JanusGraphManagement;
+import org.janusgraph.core.schema.PropertyKeyMaker;
+import org.janusgraph.core.schema.RelationTypeIndex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,24 +25,14 @@ import com.graph.poc.dto.EdgeVO;
 import com.graph.poc.dto.PropertyIndexVO;
 import com.graph.poc.dto.PropertyVO;
 import com.graph.poc.dto.Schema;
-import com.thinkaurelius.titan.core.Cardinality;
-import com.thinkaurelius.titan.core.EdgeLabel;
-import com.thinkaurelius.titan.core.Multiplicity;
-import com.thinkaurelius.titan.core.PropertyKey;
-import com.thinkaurelius.titan.core.TitanGraph;
-import com.thinkaurelius.titan.core.VertexLabel;
-import com.thinkaurelius.titan.core.schema.PropertyKeyMaker;
-import com.thinkaurelius.titan.core.schema.RelationTypeIndex;
-import com.thinkaurelius.titan.core.schema.TitanGraphIndex;
-import com.thinkaurelius.titan.core.schema.TitanManagement;
 
 @Component
 public class GraphSchemaCreator {
 	public static final String INDEX_BACK_END_NAME = "search";
 	@Autowired
 	private GraphDBInitializer graphDBConfigurator;
-	TitanGraph graphDb;
-	TitanManagement mgmt;
+	JanusGraph graphDb;
+	JanusGraphManagement mgmt;
 	@Autowired
 	private Schema schema;
 	private static final Logger logger = Logger.getLogger(GraphSchemaCreator.class);
@@ -40,7 +40,7 @@ public class GraphSchemaCreator {
 	@PostConstruct
 	public void init() {
 		logger.info("Init");
-		graphDb = (TitanGraph) graphDBConfigurator.getGraph();
+		graphDb = (JanusGraph) graphDBConfigurator.getGraph();
 //		graphDb.tx().onReadWrite(Transaction.READ_WRITE_BEHAVIOR.MANUAL);
 		this.mgmt = graphDb.openManagement();
 		create(schema);
@@ -56,9 +56,9 @@ public class GraphSchemaCreator {
 	}
 
 	private Object createPropertyIndex(PropertyIndexVO index) {
-		TitanGraphIndex resultIndex = null;
+		JanusGraphIndex resultIndex = null;
 		try {
-			TitanManagement.IndexBuilder nameIndexBuilder = mgmt.buildIndex(index.getName(), Vertex.class);
+			JanusGraphManagement.IndexBuilder nameIndexBuilder = mgmt.buildIndex(index.getName(), Vertex.class);
 			if (index.isUnique()) {
 				nameIndexBuilder = nameIndexBuilder.unique();
 			}
@@ -170,7 +170,7 @@ public class GraphSchemaCreator {
 
 	}
 
-	public Iterable<TitanGraphIndex> getIndexes() {
+	public Iterable<JanusGraphIndex> getIndexes() {
 		return graphDb.openManagement().getGraphIndexes(Vertex.class);
 	}
 

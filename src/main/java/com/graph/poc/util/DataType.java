@@ -2,7 +2,8 @@ package com.graph.poc.util;
 
 import java.util.UUID;
 
-import com.thinkaurelius.titan.core.attribute.Geoshape;
+import org.janusgraph.core.attribute.Geoshape;
+
 
 public enum DataType {
 
