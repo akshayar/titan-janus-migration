@@ -24,9 +24,6 @@ public class ForceGraphConfigMain {
 		forceConfigChange(graph);
 		close(graph);
 		logger.info("Graph closed ?-"+((JanusGraph)graph).isClosed());
-		graph=startGremlinNGetGraph(args);
-		GraphDBInitializer.setGraph(graph);
-		SpringApplication.run(ForceGraphConfigMain.class, args);
 		
 		
 
