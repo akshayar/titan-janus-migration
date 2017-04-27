@@ -4,7 +4,6 @@
 package com.graph.poc.db;
 
 import java.util.Properties;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -12,15 +11,15 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
-import org.janusgraph.core.schema.JanusGraphManagement;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
+
+import com.graph.poc.GraphForceIndexNameStrategy;
 
 
 /**
@@ -32,7 +31,6 @@ public class GraphDBInitializer {
 	private static final Logger logger=Logger.getLogger("TitanDBConfigurator");
 	
 	public static Graph GRAPH_INSTANCE=null;
-	
 	
 	@Value("${graph-db.config.location}")
 	private Resource dbConfigFile;
@@ -46,25 +44,14 @@ public class GraphDBInitializer {
 		if(GRAPH_INSTANCE!=null){
 			graph=GRAPH_INSTANCE;
 		}else{
-			graph = JanusGraphFactory.open(new PropertiesConfiguration(dbConfigFile.getURL()));			
-		}
-		JanusGraph janusGraph = (JanusGraph) graph;
-		JanusGraphManagement janusGraphManagement = janusGraph.openManagement();
-		Set<String> open = janusGraphManagement.getOpenInstances();
-		for (String string : open) {
+			graph = JanusGraphFactory.open(new PropertiesConfiguration(dbConfigFile.getURL()));
+			GraphForceIndexNameStrategy strategy=new GraphForceIndexNameStrategy(graph);
+			strategy.forceIndexConfiguration();
 			
-			if (!string.endsWith("(current)")){
-				System.out.println("Closing - "+string);
-				janusGraphManagement.forceCloseInstance(string);
-			}else{
-				System.out.println("Not closing-"+string);
-			}
-				
+			graph = JanusGraphFactory.open(new PropertiesConfiguration(dbConfigFile.getURL()));
+			
+			
 		}
-
-		janusGraphManagement.set("index.search.index-name", "titan");
-		janusGraphManagement.commit();
-		
 	}
 	
 	private void printConfigProperties(Resource configFilePath) throws Exception{
