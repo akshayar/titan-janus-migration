@@ -21,6 +21,7 @@ public class ForceGraphConfigMain {
 		forceConfigChange(graph);
 		close(graph);
 		logger.info("Graph closed ?-"+((JanusGraph)graph).isClosed());
+		System.exit(0);
 		
 		
 
