@@ -1,7 +1,7 @@
 ## Following does not work. Gives error Query requires iterating over all vertices. For better performance, use indexes
 graph-db:
   config:
-    location: file:src/main/resources/graph-conf/berkeleydb.properties
+    location: file:src/main/resources/graph-conf/cassandra.properties
 
 schema:
   labels:

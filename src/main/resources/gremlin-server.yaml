@@ -6,7 +6,7 @@ scriptEvaluationTimeout: 30000
 serializedResponseTimeout: 30000
 channelizer: org.apache.tinkerpop.gremlin.server.channel.HttpChannelizer
 graphs: {
-  graph: src/main/resources/graph-conf/berkeleydb.properties}
+  graph: src/main/resources/graph-conf/cassandra.properties}
 plugins:
   - aurelius.titan
 scriptEngines: {
