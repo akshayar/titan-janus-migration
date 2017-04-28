@@ -5,10 +5,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.janusgraph.core.JanusGraph;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.graph.poc.db.GraphDBInitializer;
 
 @SpringBootApplication
 public class ForceGraphConfigMain {
